@@ -23,20 +23,8 @@ LDFLAGS = -ldl
 .PHONY: all
 all: libdropbox_fs_fix.so
 
-debug: CFLAGS += -DDEBUG -g
-debug: all
-
-test: debug detect-ext4.o
-	@echo 'Test WITH preload'
-	LD_PRELOAD=./libdropbox_fs_fix.so ./detect-ext4.o
-	@echo 'Test WITHOUT preload'
-	@if ./detect-ext4.o; then echo "  *** Test is unreliable: we're actually on ext4"; fi
-
 %.so: %.c
 	$(CC) $(CFLAGS) -o $@ $< $(LDFLAGS)
 
-%.o: %.c
-	$(CC) -o $@ $<
-
 clean:
-	rm -vf libdropbox_fs_fix.so detect-ext4
+	rm -vf libdropbox_fs_fix.so
